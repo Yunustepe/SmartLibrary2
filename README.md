@@ -1,144 +1,105 @@
-SmartLibraryPlus
+SmartLibraryPlus - ORM Tabanlı Akıllı Kütüphane Sistemi
 
-Hibernate ORM Tabanlı Akıllı Kütüphane Sistemi
+Bu proje, Nesneye Yönelik Programlama (OOP) ve Hibernate ORM teknolojileri kullanılarak geliştirilmiş, konsol tabanlı bir kütüphane yönetim sistemidir. Proje, doğrudan JDBC kodları yerine Hibernate framework'ü kullanılarak veritabanı bağımsız ve sürdürülebilir bir yapı sunmayı amaçlar.
 
-Proje Açıklaması
+## 🎯 Projenin Amacı
 
-Bu proje, Nesneye Yönelik Programlama (OOP) prensipleri ve Hibernate ORM kullanılarak geliştirilmiş, SQLite veritabanı ile çalışan bir masaüstü konsol uygulamasıdır.
-Amaç; entity–relationship yapılarının, ORM mantığının ve CRUD işlemlerinin uygulamalı olarak gösterilmesidir.
+•⁠  ⁠*ORM (Object Relational Mapping)* mantığını kavramak ve uygulamak.
+•⁠  ⁠*Hibernate* ile veritabanı işlemlerini (CRUD) gerçekleştirmek.
+•⁠  ⁠Entity ve İlişki (OneToMany, OneToOne) yapılarını kurmak.
+•⁠  ⁠SQLite veritabanı üzerinde kalıcı veri saklamak.
 
-Uygulama, bir üniversite kütüphanesinde kitapların ve öğrencilerin yönetilmesini, kitap ödünç verme ve iade işlemlerinin takip edilmesini sağlar.
+## 🛠️ Kullanılan Teknolojiler
 
-Kullanılan Teknolojiler
+•⁠  ⁠*Programlama Dili:* Java (JDK 8+)
+•⁠  ⁠*ORM Framework:* Hibernate
+•⁠  ⁠*Veritabanı:* SQLite
+•⁠  ⁠*Build Tool:* Maven
+•⁠  ⁠*IDE:* IntelliJ IDEA / Eclipse
 
-Java
+## 📂 Proje Yapısı
 
-Hibernate ORM
+Proje, katmanlı bir mimari yaklaşımıyla geliştirilmiştir.
+Entity, DAO ve uygulama katmanları birbirinden ayrılmıştır.
 
-SQLite
 
-Maven
-
-Annotation tabanlı mapping
-
-Proje Yapısı
+⁠ text
 SmartLibraryPlus/
- ├── src/
- │   ├── entity/
- │   ├── dao/
- │   ├── util/
- │   └── app/
- ├── hibernate.cfg.xml
- ├── pom.xml
- └── README.md
+│
+├── src/main/java/
+│   ├── entity/     # Veritabanı tablolarına karşılık gelen POJO sınıfları
+│   ├── dao/        # Veritabanı erişim nesneleri (CRUD işlemleri)
+│   ├── util/       # Hibernate konfigürasyon ve SessionFactory yönetimi
+│   └── app/        # Main sınıfı ve Konsol Menü mantığı
+│
+├── hibernate.cfg.xml # Veritabanı bağlantı ayarları
+├── pom.xml           # Bağımlılık yönetimi (Hibernate, SQLite Driver)
+└── README.md         # Proje dokümantasyonu
+
+ ⁠
+
+## 🧱 Veritabanı Tasarımı ve İlişkiler (ER Diagram)
+
+Projede üç ana Entity bulunmaktadır ve aralarındaki ilişkiler şu şekildedir:
+
+1.⁠ ⁠*Book (Kitap):* Kitap bilgilerini tutar.
+•⁠  ⁠İlişki: ⁠ Loan ⁠ ile *OneToOne* ilişkisi vardır.
 
 
-entity: Veritabanı tablolarını temsil eden sınıflar
+2.⁠ ⁠*Student (Öğrenci):* Kütüphaneye kayıtlı öğrencileri tutar.
+•⁠  ⁠İlişki: ⁠ Loan ⁠ ile *OneToMany* ilişkisi vardır (Bir öğrenci birden fazla işlem yapabilir).
 
-dao: Veritabanı işlemlerinin yapıldığı katman
 
-util: Hibernate yapılandırması ve yardımcı sınıflar
+3.⁠ ⁠*Loan (Ödünç Alma):* Hangi kitabın hangi öğrenci tarafından alındığını tutar.
 
-app: Uygulamanın çalıştığı ana sınıf (Main)
+### Entity Özellikleri
 
-Entity Sınıfları
-Book
+| Sınıf | Özellikler | İlişki Notları |
+| --- | --- | --- |
+| *Book* | id, title, author, year, status | ⁠ status ⁠: AVAILABLE / BORROWED |
+| *Student* | id, name, department | ⁠ List<Loan> loans ⁠ |
+| *Loan* | id, borrowDate, returnDate | ⁠ Student student ⁠, ⁠ Book book ⁠ |
 
-id
+## ⚙️ Kurulum ve Çalıştırma
 
-title
+1.⁠ ⁠*Projeyi Klonlayın/İndirin:* Proje dosyalarını bilgisayarınıza kaydedin.
+2.⁠ ⁠*Bağımlılıkları Yükleyin:*
+•⁠  ⁠Proje Maven tabanlıdır. ⁠ pom.xml ⁠ dosyasındaki bağımlılıkların (Hibernate Core, SQLite JDBC) inmesini bekleyin.
 
-author
 
-publishYear
+3.⁠ ⁠*Veritabanı Ayarı:*
+•⁠  ⁠⁠ hibernate.cfg.xml ⁠ dosyası proje kök dizininde veya ⁠ resources ⁠ altında olmalıdır.
+•⁠  ⁠⁠ hbm2ddl.auto ⁠ özelliği ⁠ update ⁠ olarak ayarlandığı için tablolar ilk çalıştırmada otomatik oluşturulacaktır.
 
-status (AVAILABLE / BORROWED)
 
-Student
+4.⁠ ⁠*Uygulamayı Başlatın:*
+•⁠  ⁠⁠ src/app/Main.java ⁠ (veya uygulamanın giriş noktası olan sınıf) dosyasını çalıştırın.
 
-id
 
-name
 
-department
+## 📋 Kullanım (Menü İşlemleri)
 
-Bir öğrenci birden fazla ödünç alma kaydına sahip olabilir.
+Uygulama çalıştırıldığında aşağıdaki konsol menüsü sizi karşılayacaktır:
 
-Loan
+1.⁠ ⁠*Kitap Ekle:* Sisteme yeni kitap ekler (Varsayılan durum: AVAILABLE).
+2.⁠ ⁠*Kitapları Listele:* Tüm kitapları ve ödünç durumlarını listeler.
+3.⁠ ⁠*Öğrenci Ekle:* Sisteme yeni öğrenci kaydeder.
+4.⁠ ⁠*Öğrencileri Listele:* Kayıtlı öğrencileri listeler.
+5.⁠ ⁠*Kitap Ödünç Ver:*
+•⁠  ⁠Seçilen öğrenciye seçilen kitabı ödünç verir.
+•⁠  ⁠Kontrol: Eğer kitap zaten ödünçteyse (BORROWED) işlem engellenir.
 
-id
 
-borrowDate
+6.⁠ ⁠*Ödünç Listesini Görüntüle:* Kimin hangi kitabı ne zaman aldığını gösterir.
+7.⁠ ⁠*Kitap Geri Teslim Al:*
+•⁠  ⁠Kitabın iade tarihini (returnDate) günceller.
+•⁠  ⁠Kitabın durumunu tekrar AVAILABLE yapar.
 
-returnDate
 
-Nesne İlişkileri
+8.⁠ ⁠*Çıkış:* Uygulamayı kapatır ve Hibernate oturumunu sonlandırır.
 
-Student – Loan → OneToMany / ManyToOne
+## ⚠️ Kısıtlamalar ve Kurallar
 
-Loan – Book → OneToOne
-
-İlişkiler Hibernate annotation’ları kullanılarak tanımlanmıştır.
-
-DAO Katmanı
-
-Her entity için ayrı DAO sınıfı bulunmaktadır:
-
-BookDao
-
-StudentDao
-
-LoanDao
-
-Her DAO sınıfında aşağıdaki metotlar yer almaktadır:
-
-save
-
-update
-
-delete
-
-getById
-
-getAll
-
-Tüm veritabanı işlemleri Hibernate Session ve Transaction kullanılarak gerçekleştirilmiştir.
-
-Veritabanı
-
-SQLite kullanılmıştır
-
-Tablolar Hibernate tarafından otomatik oluşturulmaktadır
-
-hbm2ddl.auto = update ayarı aktiftir
-
-Konsol Menü
-
-Uygulama çalıştığında kullanıcıya aşağıdaki menü sunulur:
-
-1 - Kitap Ekle
-2 - Kitapları Listele
-3 - Öğrenci Ekle
-4 - Öğrencileri Listele
-5 - Kitap Ödünç Ver
-6 - Ödünç Listesini Görüntüle
-7 - Kitap Geri Teslim Al
-0 - Çıkış
-
-Uygulama Kuralları
-
-Ödünç verilmiş bir kitap tekrar ödünç verilemez
-
-Kitap iade edildiğinde durumu tekrar AVAILABLE olarak güncellenir
-
-JDBC ile doğrudan SQL yazılmamıştır
-
-Çalıştırma
-
-Proje bir Java IDE’sinde (IntelliJ IDEA vb.) açılır
-
-Maven bağımlılıkları yüklenir
-
-Main sınıfı çalıştırılır
-
-Konsol üzerinden işlemler yapılır
+•⁠  ⁠*JDBC Kullanımı:* Yasaktır. Tüm işlemler Hibernate Session ve Transaction üzerinden yürütülür.
+•⁠  ⁠*SQL Sorguları:* Manuel SQL yazılmamış, HQL veya Hibernate metotları kullanılmıştır.
+•⁠  ⁠*GUI:* Grafik arayüz yoktur, tamamen konsol tabanlıdır.
